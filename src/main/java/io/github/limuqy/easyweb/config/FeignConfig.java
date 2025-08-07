@@ -1,6 +1,6 @@
-package com.lingmu.easyweb.config;
+package io.github.limuqy.easyweb.config;
 
-import com.lingmu.easyweb.core.util.ServletUtil;
+import io.github.limuqy.easyweb.core.util.ServletUtil;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import org.springframework.context.annotation.Configuration;

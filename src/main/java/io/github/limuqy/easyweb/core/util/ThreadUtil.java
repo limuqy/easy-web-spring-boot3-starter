@@ -1,7 +1,7 @@
-package com.lingmu.easyweb.core.util;
+package io.github.limuqy.easyweb.core.util;
 
-import com.lingmu.easyweb.core.context.AppContext;
-import com.lingmu.easyweb.model.core.UserProfile;
+import io.github.limuqy.easyweb.core.context.AppContext;
+import io.github.limuqy.easyweb.model.core.UserProfile;
 import lombok.NonNull;
 
 import java.util.concurrent.*;

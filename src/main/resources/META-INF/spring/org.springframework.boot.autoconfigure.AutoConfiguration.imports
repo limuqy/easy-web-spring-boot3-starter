@@ -1,2 +1,2 @@
-com.lingmu.easyweb.config.FeignConfig
-com.lingmu.easyweb.config.WebConfig
+io.github.limuqy.easyweb.config.FeignConfig
+io.github.limuqy.easyweb.config.WebConfig

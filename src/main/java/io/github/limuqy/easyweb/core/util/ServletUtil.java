@@ -1,4 +1,4 @@
-package com.lingmu.easyweb.core.util;
+package io.github.limuqy.easyweb.core.util;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
