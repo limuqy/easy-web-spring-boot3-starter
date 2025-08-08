@@ -6,11 +6,41 @@
 
     <groupId>io.github.limuqy</groupId>
     <artifactId>easy-web-spring-boot3-starter</artifactId>
-    <version>1.0.1</version>
+    <name>easy-web-spring-boot3-starter</name>
+    <version>${revision}</version>
     <description>easy-web-spring-boot3-starter</description>
+    <url>https://github.com/limuqy/${project.artifactId}</url>
+
+    <developers>
+        <developer>
+            <id>limuqy</id>
+            <name>limuqy</name>
+            <email>10885740@qq.com</email>
+            <url>https://github.com/limuqy</url>
+        </developer>
+    </developers>
+
+    <issueManagement>
+        <system>GitHub</system>
+        <url>${project.url}/issues</url>
+    </issueManagement>
+
+    <licenses>
+        <license>
+            <name>Apache License 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <scm>
+        <connection>scm:git:git://github.com/limuqy/${project.artifactId}.git</connection>
+        <developerConnection>scm:git:git@github.com:limuqy/${project.artifactId}.git</developerConnection>
+        <url>${project.url}</url>
+        <tag>HEAD</tag>
+    </scm>
 
     <properties>
-        <app.version>1.0.1</app.version>
+        <revision>1.0.0-beta</revision>
         <java.version>21</java.version>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
@@ -25,22 +55,22 @@
             <dependency>
                 <groupId>io.github.limuqy</groupId>
                 <artifactId>easy-web-core</artifactId>
-                <version>${app.version}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>io.github.limuqy</groupId>
                 <artifactId>easy-web-excel</artifactId>
-                <version>${app.version}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>io.github.limuqy</groupId>
                 <artifactId>easy-web-mybatis</artifactId>
-                <version>${app.version}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>io.github.limuqy</groupId>
                 <artifactId>easy-web-cache</artifactId>
-                <version>${app.version}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
@@ -103,5 +133,92 @@
             <scope>compile</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+            <!-- Source -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.1.0</version>
+                <inherited>true</inherited>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <excludeResources>true</excludeResources>
+                    <useDefaultExcludes>true</useDefaultExcludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <!-- Javadoc -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>2.10.4</version>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!-- GPG -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.6</version>
+                        <configuration>
+                            <!-- 改成你自己的路径 -->
+                            <executable>D:\app\GnuPG\bin\gpg.exe</executable>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <version>0.4.0</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <!-- 这里的serverId是之前在settings.xml中配置的 -->
+                            <publishingServerId>sonatype-limuqy</publishingServerId>
+                            <tokenAuth>true</tokenAuth>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
