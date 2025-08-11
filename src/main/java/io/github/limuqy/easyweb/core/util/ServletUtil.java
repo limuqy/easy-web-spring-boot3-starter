@@ -11,10 +11,7 @@ import java.net.InetAddress;
 import java.net.URLEncoder;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 public class ServletUtil {
@@ -26,7 +23,10 @@ public class ServletUtil {
      */
     public static HttpServletResponse getHttpServletResponse() {
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
-        return ((ServletRequestAttributes) requestAttributes).getResponse();
+        if (requestAttributes != null) {
+            return ((ServletRequestAttributes) requestAttributes).getResponse();
+        }
+        return null;
     }
 
     /**
@@ -34,7 +34,10 @@ public class ServletUtil {
      */
     public static HttpServletRequest getHttpServletRequest() {
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
-        return ((ServletRequestAttributes) requestAttributes).getRequest();
+        if (requestAttributes != null) {
+            return ((ServletRequestAttributes) requestAttributes).getRequest();
+        }
+        return null;
     }
 
     /**
@@ -42,7 +45,10 @@ public class ServletUtil {
      */
     public static Boolean isMobileDevice() {
         HttpServletRequest httpServletRequest = getHttpServletRequest();
-        String userAgent = httpServletRequest.getHeader("User-Agent");
+        String userAgent = null;
+        if (httpServletRequest != null) {
+            userAgent = httpServletRequest.getHeader("User-Agent");
+        }
         // 目前先暂时定这些作为移动端
         return userAgent != null &&
                 (userAgent.contains("Mobile") ||
@@ -54,8 +60,11 @@ public class ServletUtil {
     }
 
     public static Map<String, String> getHeaders() {
-        HttpServletRequest request = getRequest();
         Map<String, String> headerMap = new HashMap<>();
+        HttpServletRequest request = getRequest();
+        if (request == null) {
+            return headerMap;
+        }
         Enumeration<String> enumeration = request.getHeaderNames();
         while (enumeration.hasMoreElements()) {
             String name = enumeration.nextElement();
@@ -66,8 +75,13 @@ public class ServletUtil {
     }
 
     public static HttpServletRequest getRequest() {
+        RequestAttributes attributes = RequestContextHolder.getRequestAttributes();
+        if (Objects.isNull(attributes)) {
+            return null;
+        }
         return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
     }
+
 
     /**
      * 获取本机的ip

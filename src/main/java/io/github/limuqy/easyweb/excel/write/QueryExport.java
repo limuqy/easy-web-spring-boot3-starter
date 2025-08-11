@@ -4,6 +4,7 @@ import cn.idev.excel.converters.Converter;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.toolkit.Db;
 import io.github.limuqy.easyweb.core.function.Func2;
 import io.github.limuqy.easyweb.core.util.BeanUtil;
 import io.github.limuqy.easyweb.core.util.LambdaUtil;
@@ -33,6 +34,7 @@ public class QueryExport<T, M> {
             }
             return BeanUtil.copyToList(list, clazz);
         };
+        listQuery = Db::list;
     }
 
     /**
