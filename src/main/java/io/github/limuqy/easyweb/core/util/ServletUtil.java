@@ -107,7 +107,7 @@ public class ServletUtil {
         fileName = fileName.endsWith(SUFFIX_XLSX) ? fileName : fileName + SUFFIX_XLSX;
         // 这里URLEncoder.encode可以防止中文乱码
         String fileTitle = URLEncoder.encode(fileName, StandardCharsets.UTF_8).replaceAll("\\+", "%20");
-        response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
         response.setHeader("Access-Control-Expose-Headers", "Content-Disposition");
         response.setHeader("content-disposition", "attachment; filename*=utf-8''" + fileTitle);

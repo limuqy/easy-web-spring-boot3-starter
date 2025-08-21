@@ -33,7 +33,11 @@ public class ThreadUtil {
 
     public static <T> Callable<T> wrap(final Callable<T> callable) {
         UserProfile userProfile = AppContext.getUserProfile();
+        String traceId = TraceIdUtil.getTraceId();
         return () -> {
+            if (StringUtil.isNoneBlank(traceId)) {
+                TraceIdUtil.setTraceId(traceId);
+            }
             AppContext.setUserProfile(userProfile);
             return callable.call();
         };
@@ -41,7 +45,11 @@ public class ThreadUtil {
 
     public static Runnable wrap(final Runnable runnable) {
         UserProfile userProfile = AppContext.getUserProfile();
+        String traceId = TraceIdUtil.getTraceId();
         return () -> {
+            if (StringUtil.isNoneBlank(traceId)) {
+                TraceIdUtil.setTraceId(traceId);
+            }
             AppContext.setUserProfile(userProfile);
             runnable.run();
         };

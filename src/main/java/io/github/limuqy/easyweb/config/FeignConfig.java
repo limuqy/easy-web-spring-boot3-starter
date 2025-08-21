@@ -1,18 +1,23 @@
 package io.github.limuqy.easyweb.config;
 
-import io.github.limuqy.easyweb.core.util.ServletUtil;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
+import io.github.limuqy.easyweb.core.constant.Constant;
+import io.github.limuqy.easyweb.core.context.AppContext;
+import io.github.limuqy.easyweb.core.util.StringUtil;
+import io.github.limuqy.easyweb.core.util.TraceIdUtil;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.Map;
 
 @Configuration
 public class FeignConfig implements RequestInterceptor {
     @Override
     public void apply(RequestTemplate requestTemplate) {
-        Map<String, String> headers = ServletUtil.getHeaders();
         // 传递请求头
-        headers.forEach(requestTemplate::header);
+        if (StringUtil.isNoneBlank(TraceIdUtil.getTraceId())) {
+            requestTemplate.header(TraceIdUtil.TRACE_ID, TraceIdUtil.getTraceId());
+        }
+        if (!AppContext.isAnonymous() && !requestTemplate.headers().containsKey(Constant.HEADER_TOKEN)) {
+            requestTemplate.header(Constant.HEADER_TOKEN, AppContext.getUserProfile().getToken());
+        }
     }
 }
