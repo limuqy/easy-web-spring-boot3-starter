@@ -1,3 +1,3 @@
 io.github.limuqy.easyweb.config.FeignConfig
 io.github.limuqy.easyweb.config.WebConfig
-io.github.limuqy.easyweb.config.TraceIdConfig
+io.github.limuqy.easyweb.config.ExceptionHandlerAdvice
