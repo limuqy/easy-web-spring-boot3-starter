@@ -1,9 +1,10 @@
 package io.github.limuqy.easyweb.core.util;
 
 import io.github.limuqy.easyweb.core.context.AppContext;
+import io.github.limuqy.easyweb.core.queue.PutBlockingQueue;
 import io.github.limuqy.easyweb.model.core.UserProfile;
-import lombok.NonNull;
 
+import java.util.Objects;
 import java.util.concurrent.*;
 
 public class ThreadUtil {
@@ -59,24 +60,31 @@ public class ThreadUtil {
         return new ThreadPoolExecutor(1, corePoolSize, 1L, TimeUnit.MINUTES, new PutBlockingQueue<>(maxQueue), Thread.ofVirtual().factory());
     }
 
-    /**
-     * 重写offer为阻塞操作
-     */
-    private static class PutBlockingQueue<T> extends LinkedBlockingQueue<T> {
+    public static ExecutorService blockingVirtualService(int maxQueue) {
+        return new ThreadPoolExecutor(0, Runtime.getRuntime().availableProcessors(), 5L, TimeUnit.MINUTES, new PutBlockingQueue<>(maxQueue), Thread.ofVirtual().factory());
+    }
 
-        public PutBlockingQueue(int size) {
-            super(size);
+    public static void closeExecutor(ExecutorService executorService) {
+        if (Objects.isNull(executorService)) {
+            return;
         }
-
-        @Override
-        public boolean offer(@NonNull T t) {
-            try {
-                put(t);
-                return true;
-            } catch (InterruptedException e) {
+        boolean terminated = executorService.isTerminated();
+        if (!terminated) {
+            executorService.shutdown();
+            boolean interrupted = false;
+            while (!terminated) {
+                try {
+                    terminated = executorService.awaitTermination(2L, TimeUnit.HOURS);
+                } catch (InterruptedException e) {
+                    if (!interrupted) {
+                        executorService.shutdownNow();
+                        interrupted = true;
+                    }
+                }
+            }
+            if (interrupted) {
                 Thread.currentThread().interrupt();
             }
-            return false;
         }
     }
 }
