@@ -7,8 +7,6 @@ import io.github.limuqy.easyweb.core.exception.RowIdException;
 import io.github.limuqy.easyweb.core.util.TraceIdUtil;
 import io.github.limuqy.easyweb.mybitis.base.RestResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -29,7 +27,7 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class ExceptionHandlerAdvice {
 
-    @Value("${spring.application.name}")
+    @Value("${spring.application.name:}")
     private String serverName;
 
     @ExceptionHandler(value = Exception.class)
@@ -42,13 +40,13 @@ public class ExceptionHandlerAdvice {
     @ExceptionHandler(value = IllegalArgumentException.class)
     public RestResponse<?> errorHandler(IllegalArgumentException e) {
         log.error("非法参数错误：", e);
-        return RestResponse.fail(e.getMessage());
+        return RestResponse.fail(HttpStatus.BAD_REQUEST, e.getMessage());
     }
 
     @ExceptionHandler(value = AccessDeniedException.class)
     public RestResponse<?> accessHandler(AccessDeniedException e) {
         log.error("拒绝访问：", e);
-        return RestResponse.fail(HttpStatus.UNAUTHORIZED, "auth.error");
+        return RestResponse.fail(HttpStatus.UNAUTHORIZED, e.getMessage());
     }
 
     @ExceptionHandler(value = BusinessException.class)
