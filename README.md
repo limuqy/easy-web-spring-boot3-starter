@@ -25,12 +25,3 @@ implementation group: 'io.github.limuqy', name: 'easy-web-spring-boot3-starter',
 ~~~
 
 ## 文档
-
-~~~Java
-public class TypingCode {
-    public static void main(String[] args) {
-        System.out.println("正在完善...");
-    }
-}
-~~~
-

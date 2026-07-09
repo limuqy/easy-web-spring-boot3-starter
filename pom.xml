@@ -40,7 +40,7 @@
     </scm>
 
     <properties>
-        <revision>1.1.1</revision>
+        <revision>1.2.0</revision>
         <java.version>21</java.version>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
@@ -48,10 +48,22 @@
         <openfeign.version>4.3.2</openfeign.version>
         <springboot.version>3.5.14</springboot.version>
         <mybatis-plus.version>3.5.8</mybatis-plus.version>
+        <poi.version>5.3.0</poi.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <!-- Import Spring Boot 3 BOM to ensure all Spring Boot managed
+                 dependencies (spring-data-*, slf4j-api, etc.) use Boot 3
+                 versions, overriding the Boot 2 transitive versions brought
+                 in by the easy-web core modules. -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${springboot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
             <dependency>
                 <groupId>io.github.limuqy</groupId>
                 <artifactId>easy-web-core</artifactId>
@@ -59,8 +71,37 @@
             </dependency>
             <dependency>
                 <groupId>io.github.limuqy</groupId>
-                <artifactId>easy-web-excel</artifactId>
+                <artifactId>easy-web-poi</artifactId>
                 <version>${revision}</version>
+            </dependency>
+            <!-- Apache POI: 统一 poi 与 poi-ooxml 版本
+                 (fastexcel 传递 poi 5.3.0, poi-tl 传递 poi-ooxml 5.2.2) -->
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi</artifactId>
+                <version>${poi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>${poi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml-lite</artifactId>
+                <version>${poi.version}</version>
+            </dependency>
+            <!-- 统一 commons-io (poi-ooxml 传递 2.11.0, fastexcel 传递 2.16.1) -->
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>2.16.1</version>
+            </dependency>
+            <!-- 统一 xmlbeans (poi-tl-ext 传递 3.0.1, poi-ooxml 传递 5.0.3) -->
+            <dependency>
+                <groupId>org.apache.xmlbeans</groupId>
+                <artifactId>xmlbeans</artifactId>
+                <version>5.0.3</version>
             </dependency>
             <dependency>
                 <groupId>io.github.limuqy</groupId>
@@ -92,6 +133,12 @@
                 <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
                 <version>${mybatis-plus.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-test</artifactId>
+                <version>${springboot.version}</version>
+                <scope>test</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -102,7 +149,7 @@
         </dependency>
         <dependency>
             <groupId>io.github.limuqy</groupId>
-            <artifactId>easy-web-excel</artifactId>
+            <artifactId>easy-web-poi</artifactId>
         </dependency>
         <dependency>
             <groupId>io.github.limuqy</groupId>
@@ -131,6 +178,12 @@
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
             <scope>compile</scope>
+        </dependency>
+        <!-- Test -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -194,7 +247,7 @@
                         <version>1.6</version>
                         <configuration>
                             <!-- 改成你自己的路径 -->
-                            <executable>D:\app\GnuPG\bin\gpg.exe</executable>
+                            <executable>${gpg.executable}</executable>
                         </configuration>
                         <executions>
                             <execution>

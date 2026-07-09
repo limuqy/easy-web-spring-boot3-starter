@@ -1,3 +1,4 @@
-io.github.limuqy.easyweb.config.FeignConfig
 io.github.limuqy.easyweb.config.WebConfig
 io.github.limuqy.easyweb.config.ExceptionHandlerAdvice
+io.github.limuqy.easyweb.config.ThreadFactoryConfiguration
+
