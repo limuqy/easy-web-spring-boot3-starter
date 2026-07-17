@@ -2,7 +2,6 @@ package io.github.limuqy.easyweb.config;
 
 import io.github.limuqy.easyweb.core.config.CorsProperties;
 import io.github.limuqy.easyweb.core.config.EasyWebProperties;
-import io.github.limuqy.easyweb.core.util.SpringUtil;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,9 +16,14 @@ import java.util.List;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
+    private final EasyWebProperties easyWebProperties;
+
+    public WebConfig(EasyWebProperties easyWebProperties) {
+        this.easyWebProperties = easyWebProperties;
+    }
+
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        EasyWebProperties easyWebProperties = SpringUtil.getBean(EasyWebProperties.class);
         if (easyWebProperties == null || easyWebProperties.getCors() == null) {
             return;
         }

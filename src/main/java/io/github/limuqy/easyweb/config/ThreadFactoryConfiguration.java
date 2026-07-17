@@ -2,6 +2,7 @@ package io.github.limuqy.easyweb.config;
 
 import io.github.limuqy.easyweb.core.thread.EasyThreadFactory;
 import io.github.limuqy.easyweb.core.util.ThreadUtil;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,6 +15,7 @@ import org.springframework.context.annotation.Configuration;
 public class ThreadFactoryConfiguration {
 
     @Bean
+    @ConditionalOnMissingBean(EasyThreadFactory.class)
     public EasyThreadFactory easyThreadFactory() {
         VirtualEasyThreadFactory factory = new VirtualEasyThreadFactory();
         ThreadUtil.setFactory(factory);
